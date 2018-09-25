@@ -64,8 +64,14 @@ public class MeetMeApplication extends Application<MeetMeConfiguration> {
         try {
             Connection con = hibernate.getDataSourceFactory(configuration).build(environment.metrics(), "DataSource").getConnection();
             PreparedStatement stmt = con.prepareStatement("insert into person (firstname, name, email) values ('pvn1', 'pn1', 'email1')");
+            PreparedStatement stmt2 = con.prepareStatement("insert into person (firstname, name, email) values ('Tay', 'tay', 'email@g.de')");
+
             stmt.executeUpdate();
+            stmt2.executeUpdate();
+
             stmt.close();
+            stmt2.close();
+
             con.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);

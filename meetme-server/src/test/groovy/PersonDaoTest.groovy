@@ -130,6 +130,9 @@ class PersonDaoTest extends Specification {
         def session = sessionFactory.getCurrentSession()
         def transaction = session.beginTransaction()
         Person created = personDao.persist(new Person(0,"fn1", "name1", "email1"))
+        transaction.commit()
+        session = sessionFactory.getCurrentSession()
+        transaction = session.beginTransaction()
 
         when:
         personDao.remove(created)

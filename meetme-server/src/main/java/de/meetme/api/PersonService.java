@@ -18,27 +18,32 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
+/**
+ * The PersonService is the class that is called by Dropwizard when the REST API for person is called.
+ * In @Path below the identifier for this service is declared that needs to be used in the URL to this REST service.
+ */
+
 @Path("/person") // Part of the URL to identify this resource
-@Produces(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON) // data exchange is in JSON
 @Consumes(MediaType.APPLICATION_JSON)
 public class PersonService {
-    private static final Logger log = LoggerFactory.getLogger(PersonService.class);
+    private static final Logger log = LoggerFactory.getLogger(PersonService.class); // Logging of error and debug messages
 
-    private final PersonDao dao;
+    private final PersonDao dao; // PersonDao (data access object) will be injected by Dropwizard framework in the constructor
 
     public PersonService(PersonDao dao) {
         this.dao = dao;
     }
 
-    @GET
-    @Path("/{id}")
+    @GET // HTTP method: get
+    @Path("/{id}") // the URL path contains the parameter "id" this will be provided to the getPerson() method
     @UnitOfWork //  be transaction aware (This tag automatically creates a database transaction with begin/commit or rollback in case of an error
     public Person getPerson(@PathParam("id") long id) {
         return dao.get(id);
     }
 
-    @DELETE
-    @Path("/{id}")
+    @DELETE  // HTTP method: delete
+    @Path("/{id}")  // the URL path contains the parameter "id" this will be provided to the removePerson() method
     @Produces(MediaType.TEXT_PLAIN) // We return plain text, no JSON
     @UnitOfWork  //  be transaction aware (This tag automatically creates a database transaction with begin/commit or rollback in case of an error
     public void removePerson(@PathParam("id") long id) {
@@ -46,20 +51,20 @@ public class PersonService {
         dao.remove(person);
     }
 
-    @GET
+    @GET // HTTP method: get
     @UnitOfWork  //  be transaction aware (This tag automatically creates a database transaction with begin/commit or rollback in case of an error
     public List<Person> getPersons() {
         return  dao.getAll();
     }
 
-    @POST
+    @POST // HTTP method post (the parameter is provided as stream from the browser)
     @UnitOfWork  //  be transaction aware (This tag automatically creates a database transaction with begin/commit or rollback in case of an error
     public Person createPerson(Person person) throws Exception {
         log.debug("Create Person: " + person);
         return dao.persist(person);
     }
 
-    @PUT
+    @PUT // HTTP method put (the parameter is provided as stream from the browser)
     @UnitOfWork  //  be transaction aware (This tag automatically creates a database transaction with begin/commit or rollback in case of an error
     public void updatePerson(Person person) throws Exception {
         log.debug("Update Person: " + person);

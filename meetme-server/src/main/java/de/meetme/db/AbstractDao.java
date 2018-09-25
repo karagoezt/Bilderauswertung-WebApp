@@ -11,7 +11,12 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.util.List;
 
-
+/**
+ * Baseclass for data access to the database.
+ * This class has the purpose to load or store data using a SQL database connection.
+ *
+ * @param <T> T is the type of the object that will be loaded or stored by this DAO.
+ */
 abstract public class AbstractDao<T extends PersistentObject> extends AbstractDAO<T> {
     private static final Logger log = LoggerFactory.getLogger(AbstractDao.class);
 
