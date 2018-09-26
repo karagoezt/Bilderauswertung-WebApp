@@ -11,24 +11,24 @@ import javax.persistence.Entity;
  */
 @Entity // Declare to dropwizard that this is a persisted object. A table will be created automatically.
 public class Person extends PersistentObject {
-    // create table person ( id int, name varchar(256), firstname varchar(256), email varchar(256))
 
+    private String email;
+    private String password;
     private String name;
     private String firstName;
-    private String email;
     private String description;
-    private String password;
 
     public Person() {
         // Needed by Jackson deserialization
         super(0);
     }
 
-    public Person(long id, String firstName, String name, String email,String description){
+    public Person(long id, String firstName, String name, String email,String description, String password){
         super(id);
-        this.firstName = firstName;
-        this.name = name;
         this.email = email;
+        this.password = password;
+        this.name = name;
+        this.firstName = firstName;
         this.description = description;
     }
 
@@ -42,7 +42,7 @@ public class Person extends PersistentObject {
         return name;
     }
 
-    @JsonProperty // if the object is streamed as JSON id will be included
+    @JsonProperty
     public String getEmail() {
         return email;
     }
@@ -50,6 +50,11 @@ public class Person extends PersistentObject {
     @JsonProperty // if the object is streamed as JSON id will be included
     public String getDescription() {
         return description;
+    }
+
+    @JsonProperty // if the object is streamed as JSON id will be included
+    public String getPassword() {
+        return password;
     }
 
     @Override

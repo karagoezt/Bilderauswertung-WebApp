@@ -22,7 +22,7 @@ public class MeetMeApplication extends Application<MeetMeConfiguration> {
     private static final Logger log = LoggerFactory.getLogger(MeetMeApplication.class);
 
     // Add here new data classes in order to register them at hibernate bundle
-    private static final Class<?>[] entities = {de.meetme.data.Person.class};
+    private static final Class<?>[] entities = {de.meetme.data.Person.class, de.meetme.data.Photo.class};
 
     public static void main(String[] args) throws Exception {
         new MeetMeApplication().run(args);
@@ -31,7 +31,7 @@ public class MeetMeApplication extends Application<MeetMeConfiguration> {
     /**
      * Create
      */
-    private final HibernateBundle<MeetMeConfiguration> hibernate = new HibernateBundle<MeetMeConfiguration>(de.meetme.data.Person.class,entities) {
+    private final HibernateBundle<MeetMeConfiguration> hibernate = new HibernateBundle<MeetMeConfiguration>(de.meetme.data.Person.class ,entities) {
         @Override
         public DataSourceFactory getDataSourceFactory(MeetMeConfiguration configuration) {
             return configuration.getDataSourceFactory();
