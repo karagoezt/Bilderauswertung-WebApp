@@ -1,4 +1,4 @@
-package com.dhbw;
+package de.meetme.webservice;
 
 
 import com.codahale.metrics.health.HealthCheck;

@@ -1,7 +1,11 @@
 package de.meetme;
 
 import de.meetme.db.PersonDao;
+import de.meetme.webservice.JSONWs;
+import de.meetme.webservice.PlainWs;
+import de.meetme.webservice.WSHealthCheck;
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -20,6 +24,10 @@ public class MeetMeApplication extends Application<MeetMeConfiguration> {
     // Add here new data classes in order to register them at hibernate bundle
     private static final Class<?>[] entities = {de.meetme.data.Person.class};
 
+    public static void main(String[] args) throws Exception {
+        new MeetMeApplication().run(args);
+    }
+
     /**
      * Create
      */
@@ -32,12 +40,15 @@ public class MeetMeApplication extends Application<MeetMeConfiguration> {
 
     @Override
     public String getName() {
-        return "meetme";
+        return "webService";
     }
 
     @Override
     public void initialize(Bootstrap<MeetMeConfiguration> bootstrap) {
         log.debug("initialize");
+
+        // register Website
+        bootstrap.addBundle(new AssetsBundle("/htmldocs/", "/", "index.html", "static"));
 
         // register Dropwizard Hibernate bundle
         bootstrap.addBundle(hibernate);
@@ -51,6 +62,12 @@ public class MeetMeApplication extends Application<MeetMeConfiguration> {
         final PersonDao dao = new PersonDao(hibernate.getSessionFactory());
         de.meetme.api.PersonService personService = new de.meetme.api.PersonService(dao);
         environment.jersey().register(personService);
+
+        // register Services for Website
+        environment.jersey().register(new JSONWs());
+        environment.jersey().register(new PlainWs());
+        final WSHealthCheck healthCheck = new WSHealthCheck();
+        environment.healthChecks().register("template", healthCheck);
 
         // start h2 in server mode to connect remotely
         startDbServer(configuration.getDbPort());
@@ -106,10 +123,6 @@ public class MeetMeApplication extends Application<MeetMeConfiguration> {
         } catch (SQLException e) {
             log.error("Could not shutdown db server: " + e);
         }
-    }
-
-    public static void main(String[] args) throws Exception {
-        new MeetMeApplication().run(args);
     }
 
 }
