@@ -60,17 +60,21 @@ public class MeetMeApplication extends Application<MeetMeConfiguration> {
     }
 
     private void initDb(MeetMeConfiguration configuration, Environment environment) {
-        // todo check if database is already initialized
         try {
             Connection con = hibernate.getDataSourceFactory(configuration).build(environment.metrics(), "DataSource").getConnection();
-            PreparedStatement stmt = con.prepareStatement("insert into person (firstname, name, email) values ('pvn1', 'pn1', 'email1')");
-            PreparedStatement stmt2 = con.prepareStatement("insert into person (firstname, name, email) values ('Tay', 'tay', 'email@g.de')");
+            if(con.getSchema()!= null){
+                log.warn("Database already initalized.");
+            }else{
+                log.warn("Database not initalized yet. Initalize database!");
+            }
 
-            stmt.executeUpdate();
-            stmt2.executeUpdate();
-
-            stmt.close();
-            stmt2.close();
+//            PreparedStatement stmt = con.prepareStatement("insert into person (firstname, name, email) values ('pvn1', 'pn1', 'email1')");
+//            PreparedStatement stmt2 = con.prepareStatement("insert into person (firstname, name, email) values ('Tay', 'tay', 'email@g.de')");
+//            stmt.executeUpdate();
+//            stmt2.executeUpdate();
+//
+//            stmt.close();
+//            stmt2.close();
 
             con.close();
         } catch (SQLException e) {
@@ -81,7 +85,7 @@ public class MeetMeApplication extends Application<MeetMeConfiguration> {
     /**
      * Start H2 db as server.
      * You can connect remotly using this URL:
-     * jdbc:h2:tcp://localhost:9092/~/meetmedb
+     * jdbc:h2:tcp://localhost:9095/./data/dbfile
      * User: sa
      * Pwd: <KEEP EMPTY>
      *
