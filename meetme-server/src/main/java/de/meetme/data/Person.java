@@ -21,7 +21,7 @@ public class Person extends PersistentObject {
     private String name;
     @Column(name= "user_firstname", nullable =false)
     private String firstName;
-    @Column(name= "user_description", nullable =false, length = 200)
+    @Column(name= "user_description", length = 200)
     private String description;
 
     public Person() {
