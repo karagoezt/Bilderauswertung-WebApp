@@ -2,20 +2,26 @@ package de.meetme.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 /**
  * Plain data object which can be stored in the database or transfered as JSON.
  *
  * Never add additional logical to this class. By intent it only contains data.
  */
-@Entity // Declare to dropwizard that this is a persisted object. A table will be created automatically.
+@Entity// Declare to dropwizard that this is a persisted object. A table will be created automatically.
+@Table(name ="users")
 public class Person extends PersistentObject {
 
+    @Column(name ="user_email", nullable =false, unique = true)
     private String email;
+    @Column(name = "user_password", nullable =false)
     private String password;
+    @Column(name= "user_name", nullable =false)
     private String name;
+    @Column(name= "user_firstname", nullable =false)
     private String firstName;
+    @Column(name= "user_description", nullable =false, length = 200)
     private String description;
 
     public Person() {
@@ -23,7 +29,7 @@ public class Person extends PersistentObject {
         super(0);
     }
 
-    public Person(long id, String firstName, String name, String email,String description, String password){
+    public Person(long id, String firstName, String name, String email, String description, String password){
         super(id);
         this.email = email;
         this.password = password;

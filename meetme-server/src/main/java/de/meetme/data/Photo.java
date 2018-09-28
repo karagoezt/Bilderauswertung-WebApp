@@ -9,14 +9,19 @@ import javax.persistence.*;
  *
  * Never add additional logical to this class. By intent it only contains data.
  */
-@Entity // Declare to dropwizard that this is a persisted object. A table will be created automatically.
+@Entity// Declare to dropwizard that this is a persisted object. A table will be created automatically.
+@Table(name = "photos")
 public class Photo extends PersistentObject{
 
     @ManyToOne
+    @JoinColumn(name ="user_id")
     private Person person;
+    @Column(name = "photo_picture", nullable = false, unique = true)
     @Lob
     private byte[] picture;
+    @Column(name = "photo_category", nullable = false)
     private String category;
+    @Column(name = "photo_score")
     private int score;
 
     public Photo() {
