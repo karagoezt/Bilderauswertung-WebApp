@@ -2,32 +2,37 @@ package de.meetme.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 /**
  * Plain data object which can be stored in the database or transfered as JSON.
  *
- * Never add additional logical to this class. By intent it only contains data.
  */
-@Entity // Declare to dropwizard that this is a persisted object. A table will be created automatically.
-public class Person extends PersistentObject {
+@Entity
+public class User extends PersistentObject {
 
+    @Column(nullable =false, unique = true)
     private String email;
+    @Column(nullable =false)
     private String password;
-    private String name;
+    @Column(nullable =false)
+    private String lastname;
+    @Column(nullable =false)
     private String firstName;
+    @Column(length = 200)
     private String description;
 
-    public Person() {
+    public User() {
         // Needed by Jackson deserialization
         super(0);
     }
 
-    public Person(String firstName, String name, String email,String description, String password){
+    public User(String firstName, String name, String email, String description, String password){
         super(0);
         this.email = email;
         this.password = password;
-        this.name = name;
+        this.lastname = name;
         this.firstName = firstName;
         this.description = description;
     }
@@ -38,8 +43,8 @@ public class Person extends PersistentObject {
     }
 
     @JsonProperty // if the object is streamed as JSON id will be included
-    public String getName() {
-        return name;
+    public String getLastname() {
+        return lastname;
     }
 
     @JsonProperty
@@ -59,9 +64,9 @@ public class Person extends PersistentObject {
 
     @Override
     public String toString() {
-        return "Person{" +
+        return "User{" +
                 "id=" + getId() +
-                ", name='" + name + '\'' +
+                ", lastname='" + lastname + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", email='" + email + '\'' +
                 ", description='" + description + '\'' +

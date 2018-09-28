@@ -1,5 +1,5 @@
-import de.meetme.data.Person
-import de.meetme.db.PersonDao
+import de.meetme.data.User
+import de.meetme.db.UserDao
 import org.hibernate.SessionFactory
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder
 import org.hibernate.cfg.Configuration
@@ -9,7 +9,7 @@ import spock.lang.Specification
 class PersonDaoTest extends Specification {
 
     SessionFactory sessionFactory
-    PersonDao personDao
+    UserDao personDao
 
     void getSessionFactory() {
         Configuration config = new Configuration();
@@ -21,7 +21,7 @@ class PersonDaoTest extends Specification {
         config.setProperty("hibernate.show_sql", "true");
         config.setProperty("hibernate.hbm2ddl.auto", "create");
 
-        config.addAnnotatedClass(Person)
+        config.addAnnotatedClass(User)
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties()).build();
         sessionFactory = config.buildSessionFactory(serviceRegistry);
@@ -30,7 +30,7 @@ class PersonDaoTest extends Specification {
 
     def setup() {
         getSessionFactory()
-        personDao = new PersonDao(sessionFactory)
+        personDao = new UserDao(sessionFactory)
     }
 
     def cleanup() {
@@ -43,7 +43,7 @@ class PersonDaoTest extends Specification {
 
         when:
         def transaction = session.beginTransaction()
-        personDao.persist(new Person())
+        personDao.persist(new User())
         def result = personDao.getAll()
         transaction.commit()
 
@@ -58,9 +58,9 @@ class PersonDaoTest extends Specification {
         setup:
         def session = sessionFactory.getCurrentSession()
         def transaction = session.beginTransaction()
-        personDao.persist(new Person(0, "fn1", "n1", "e1"))
-        personDao.persist(new Person(0, "fn2", "n2", "e2"))
-        personDao.persist(new Person(0, "fn3", "n3", "e3"))
+        personDao.persist(new User(0, "fn1", "n1", "e1"))
+        personDao.persist(new User(0, "fn2", "n2", "e2"))
+        personDao.persist(new User(0, "fn3", "n3", "e3"))
         transaction.commit()
         session.close()
 
@@ -83,9 +83,9 @@ class PersonDaoTest extends Specification {
         setup:
         def session = sessionFactory.getCurrentSession()
         def transaction = session.beginTransaction()
-        personDao.persist(new Person(0, "fn1", "n1", "e1"))
-        personDao.persist(new Person(0, "fn2", "n2", "e2"))
-        personDao.persist(new Person(0, "fn3", "n3", "e3"))
+        personDao.persist(new User(0, "fn1", "n1", "e1"))
+        personDao.persist(new User(0, "fn2", "n2", "e2"))
+        personDao.persist(new User(0, "fn3", "n3", "e3"))
         transaction.commit()
         session.close()
 
@@ -100,7 +100,7 @@ class PersonDaoTest extends Specification {
         result
         result.size() == 1
         result[0].id == 2
-        result[0].name == "n2"
+        result[0].lastname == "n2"
 
         cleanup:
         session.close()
@@ -111,14 +111,14 @@ class PersonDaoTest extends Specification {
         setup:
         def session = sessionFactory.getCurrentSession()
         def transaction = session.beginTransaction()
-        Person created = personDao.persist(new Person(0,"fn1", "name1", "email1"))
+        User created = personDao.persist(new User(0,"fn1", "name1", "email1"))
 
         when:
         def result = personDao.get(created.getId())
         transaction.commit()
 
         then:
-        result.name == "name1"
+        result.lastname == "name1"
         result.id == 1
 
         cleanup:
@@ -129,7 +129,7 @@ class PersonDaoTest extends Specification {
         setup:
         def session = sessionFactory.getCurrentSession()
         def transaction = session.beginTransaction()
-        Person created = personDao.persist(new Person(0,"fn1", "name1", "email1"))
+        User created = personDao.persist(new User(0,"fn1", "name1", "email1"))
         transaction.commit()
         session = sessionFactory.getCurrentSession()
         transaction = session.beginTransaction()
@@ -150,18 +150,18 @@ class PersonDaoTest extends Specification {
         setup:
         def session = sessionFactory.getCurrentSession()
         def transaction = session.beginTransaction()
-        Person p = new Person(0,"fn1", "name1", "email1")
-        Person created = personDao.persist(p)
+        User p = new User(0,"fn1", "name1", "email1")
+        User created = personDao.persist(p)
 
         when:
-        p.name = "name2"
+        p.lastname = "name2"
         personDao.update(p)
         def result = personDao.get(p.id)
         transaction.commit()
 
         then:
         result
-        result.name == "name2"
+        result.lastname == "name2"
         result.id == created.id
 
         cleanup:

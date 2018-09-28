@@ -9,19 +9,17 @@ import javax.persistence.*;
  *
  * Never add additional logical to this class. By intent it only contains data.
  */
-@Entity// Declare to dropwizard that this is a persisted object. A table will be created automatically.
-@Table(name = "photos")
+@Entity
 public class Photo extends PersistentObject{
 
     @ManyToOne
     @JoinColumn(name ="user_id")
-    private Person person;
-    @Column(name = "photo_picture", nullable = false, unique = true)
+    private User user;
+    @Column(nullable = false, unique = true)
     @Lob
     private byte[] picture;
-    @Column(name = "photo_category", nullable = false)
+    @Column(nullable = false)
     private String category;
-    @Column(name = "photo_score")
     private int score;
 
     public Photo() {
@@ -29,17 +27,17 @@ public class Photo extends PersistentObject{
         super(0);
     }
 
-    public Photo(long id, Person person, String category, int score, byte[] picture) {
-        super(id);
-        this.person = person;
+    public Photo(User user, String category, int score, byte[] picture) {
+        super(0);
+        this.user = user;
         this.category = category;
         this.score = score;
         this.picture = picture;
     }
 
     @JsonProperty // if the object is streamed as JSON id will be included
-    public Person getPerson() {
-        return person;
+    public User getUser() {
+        return user;
     }
 
     @JsonProperty // if the object is streamed as JSON id will be included
@@ -47,11 +45,12 @@ public class Photo extends PersistentObject{
         return category;
     }
 
-    @JsonProperty(value = "0") // if the object is streamed as JSON id will be included
+    @JsonProperty // if the object is streamed as JSON id will be included
     public int getScore() {
         return score;
     }
 
+    @JsonProperty // if the object is streamed as JSON id will be included
     public byte[] getPicture() {
         return picture;
     }
@@ -59,7 +58,7 @@ public class Photo extends PersistentObject{
     @Override
     public String toString() {
         return "Photo{" +
-                "person=" + person +
+                "user=" + user +
                 ", category='" + category + '\'' +
                 ", score=" + score +
                 '}';

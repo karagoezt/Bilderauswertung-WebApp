@@ -1,6 +1,8 @@
 package de.meetme;
 
-import de.meetme.db.PersonDao;
+import de.meetme.api.UserService;
+import de.meetme.data.User;
+import de.meetme.db.UserDao;
 import de.meetme.webservice.JSONWs;
 import de.meetme.webservice.PlainWs;
 import de.meetme.webservice.WSHealthCheck;
@@ -21,7 +23,7 @@ public class MeetMeApplication extends Application<MeetMeConfiguration> {
     private static final Logger log = LoggerFactory.getLogger(MeetMeApplication.class);
 
     // Add here new data classes in order to register them at hibernate bundle
-    private static final Class<?>[] entities = {de.meetme.data.Person.class, de.meetme.data.Photo.class};
+    private static final Class<?>[] entities = {User.class, de.meetme.data.Photo.class};
 
     public static void main(String[] args) throws Exception {
         new MeetMeApplication().run(args);
@@ -30,7 +32,7 @@ public class MeetMeApplication extends Application<MeetMeConfiguration> {
     /**
      * Create
      */
-    private final HibernateBundle<MeetMeConfiguration> hibernate = new HibernateBundle<MeetMeConfiguration>(de.meetme.data.Person.class ,entities) {
+    private final HibernateBundle<MeetMeConfiguration> hibernate = new HibernateBundle<MeetMeConfiguration>(User.class ,entities) {
         @Override
         public DataSourceFactory getDataSourceFactory(MeetMeConfiguration configuration) {
             return configuration.getDataSourceFactory();
@@ -58,8 +60,8 @@ public class MeetMeApplication extends Application<MeetMeConfiguration> {
         log.debug("run");
 
         // add here new data classes, DAOs and services
-        final PersonDao dao = new PersonDao(hibernate.getSessionFactory());
-        de.meetme.api.PersonService personService = new de.meetme.api.PersonService(dao);
+        final UserDao dao = new UserDao(hibernate.getSessionFactory());
+        UserService personService = new UserService(dao);
         environment.jersey().register(personService);
 
         // register Services for Website
