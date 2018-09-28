@@ -33,4 +33,26 @@ public class PersonDao extends AbstractDao<Person> {
         return q.<de.meetme.data.Person>getResultList();
     }
 
+    /**
+     * Liefert den Benutzer zurück durch Abgleichen der Email
+     * @param email
+     * @return
+     */
+    public List<de.meetme.data.Person> byEmail(String email) {
+        String sqlQuery = "select * from " + getEntityClass().getSimpleName() + " where email = ?";
+        Query q = currentSession().createNativeQuery(sqlQuery, de.meetme.data.Person.class);
+        q.setParameter( 1, email );
+        return q.<de.meetme.data.Person>getResultList();
+    }
+
+    public List<de.meetme.data.Person> createPerson(Person person) {
+        String sqlQuery = "Insert Into person (firstname, name, email, password) values (?,?,?,?)";
+        Query q = currentSession().createNativeQuery(sqlQuery, de.meetme.data.Person.class);
+        q.setParameter( 1, person.getFirstName() );
+        q.setParameter( 2, person.getName() );
+        q.setParameter( 3, person.getEmail() );
+        q.setParameter( 4, person.getPassword() );
+        return q.<de.meetme.data.Person>getResultList();
+    }
+
 }

@@ -36,10 +36,16 @@ public class PersonService {
     }
 
     @GET // HTTP method: get
-    @Path("/{id}") // the URL path contains the parameter "id" this will be provided to the getPerson() method
+    @Path("/login/{email}&&{password}") // the URL path contains the parameter "id" this will be provided to the loginPerson() method
     @UnitOfWork //  be transaction aware (This tag automatically creates a database transaction with begin/commit or rollback in case of an error
-    public Person getPerson(@PathParam("id") long id) {
-        return dao.get(id);
+    public String loginPerson(@PathParam("email") String email, @PathParam("password") String password) {
+        List<Person> persons = dao.byEmail(email);
+        if(!persons.isEmpty()){
+            if(persons.get(0).getPassword().equals(password)){
+                return "true";
+            }
+        }
+        return "false";
     }
 
     @DELETE  // HTTP method: delete
@@ -57,11 +63,20 @@ public class PersonService {
         return  dao.getAll();
     }
 
+//    @POST // HTTP method post (the parameter is provided as stream from the browser)
+//    @Path("/register/{firstname}&&{name}&&{email}&&{password}") // the URL path contains the parameter "id" this will be provided to the loginPerson() method
+//    @UnitOfWork  //  be transaction aware (This tag automatically creates a database transaction with begin/commit or rollback in case of an error
+//    public String registerPerson(@PathParam("firstname") String firstname, @PathParam("firstname") String name, @PathParam("firstname") String email, @PathParam("firstname") String password){
+//        dao.createPerson(new Person(firstname,  name, email,"", password));
+//        return "User createt";
+//    }
+
     @POST // HTTP method post (the parameter is provided as stream from the browser)
+    @Path("/register") // the URL path contains the parameter "id" this will be provided to the loginPerson() method
     @UnitOfWork  //  be transaction aware (This tag automatically creates a database transaction with begin/commit or rollback in case of an error
-    public Person createPerson(Person person) throws Exception {
-        log.debug("Create Person: " + person);
-        return dao.persist(person);
+    public String registerPerson(Person person){
+        dao.createPerson(person);
+        return "User createt";
     }
 
     @PUT // HTTP method put (the parameter is provided as stream from the browser)

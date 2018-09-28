@@ -23,8 +23,8 @@ public class Person extends PersistentObject {
         super(0);
     }
 
-    public Person(long id, String firstName, String name, String email,String description, String password){
-        super(id);
+    public Person(String firstName, String name, String email,String description, String password){
+        super(0);
         this.email = email;
         this.password = password;
         this.name = name;
