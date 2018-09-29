@@ -22,6 +22,8 @@ public class User extends PersistentObject {
     private String firstname;
     @Column(length = 200)
     private String description;
+    @Column(columnDefinition = "varchar(200) default 'user'" )
+    private String role;
 
     public User() {
         // Needed by Jackson deserialization
@@ -50,6 +52,11 @@ public class User extends PersistentObject {
     @JsonProperty
     public String getEmail() {
         return email;
+    }
+
+    @JsonProperty
+    public String getRole() {
+        return role;
     }
 
     @JsonProperty // if the object is streamed as JSON id will be included
