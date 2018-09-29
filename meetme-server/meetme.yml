@@ -50,3 +50,16 @@ database:
     hibernate.hbm2ddl.auto: update # Valid: create or update (create: clear database and create fresh schema, update: keep existing database and just adjust schema if required)
 
 dbPort: 9095 # External Port of the H2 database server
+
+assets:
+  mappings:
+#    Internet URL'S
+    /htmldocs/index.html: /
+    /htmldocs/register.html: /register
+    /htmldocs/allUser.html: /alluser
+    /htmldocs/helloWorld.html: /helloworld
+
+#    Datei URL'S
+    /htmldocs/css: /css
+    /htmldocs/images: /images
+    /htmldocs/js: /js

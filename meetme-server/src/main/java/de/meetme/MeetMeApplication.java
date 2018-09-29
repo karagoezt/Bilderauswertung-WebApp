@@ -7,7 +7,7 @@ import de.meetme.webservice.JSONWs;
 import de.meetme.webservice.PlainWs;
 import de.meetme.webservice.WSHealthCheck;
 import io.dropwizard.Application;
-import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.bundles.assets.ConfiguredAssetsBundle;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -29,9 +29,6 @@ public class MeetMeApplication extends Application<MeetMeConfiguration> {
         new MeetMeApplication().run(args);
     }
 
-    /**
-     * Create
-     */
     private final HibernateBundle<MeetMeConfiguration> hibernate = new HibernateBundle<MeetMeConfiguration>(User.class ,entities) {
         @Override
         public DataSourceFactory getDataSourceFactory(MeetMeConfiguration configuration) {
@@ -48,10 +45,8 @@ public class MeetMeApplication extends Application<MeetMeConfiguration> {
     public void initialize(Bootstrap<MeetMeConfiguration> bootstrap) {
         log.debug("initialize");
 
-        // register Website
-        bootstrap.addBundle(new AssetsBundle("/htmldocs/", "/", "index.html", "static"));
-//        bootstrap.addBundle(new AssetsBundle("/htmldocs/css", "/css", null, "static"));
-//        bootstrap.addBundle(new AssetsBundle("/htmldocs/js", "/js", null, "static"));
+        // register Websites through assets
+        bootstrap.addBundle(new ConfiguredAssetsBundle());
 
         // register Dropwizard Hibernate bundle
         bootstrap.addBundle(hibernate);
@@ -87,15 +82,6 @@ public class MeetMeApplication extends Application<MeetMeConfiguration> {
             }else{
                 log.warn("Database not initalized yet. Initalize database!");
             }
-
-//            PreparedStatement stmt = con.prepareStatement("insert into person (firstname, name, email) values ('pvn1', 'pn1', 'email1')");
-//            PreparedStatement stmt2 = con.prepareStatement("insert into person (firstname, name, email) values ('Tay', 'tay', 'email@g.de')");
-//            stmt.executeUpdate();
-//            stmt2.executeUpdate();
-//
-//            stmt.close();
-//            stmt2.close();
-
             con.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);

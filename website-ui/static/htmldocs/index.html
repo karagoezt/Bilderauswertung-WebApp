@@ -40,7 +40,7 @@
   </form>
 
   <div class="login-help">
-    <a href="/register.html">Registrieren</a> • <a href="#">Passwort vergessen</a>
+    <a href="/register">Registrieren</a> • <a href="#">Passwort vergessen</a>
   </div>
 </div>
 
@@ -71,7 +71,7 @@
     function handleResponse(response){
           if(response.login == "success"){
             <!-- Auf neue Seite -->
-            window.open ('helloWorld.html','_self',false)
+            window.open ('/helloworld','_self',false)
             }
 
             if(response.login == "failed"){

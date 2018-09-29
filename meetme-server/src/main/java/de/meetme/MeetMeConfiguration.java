@@ -2,9 +2,14 @@ package de.meetme;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
+import io.dropwizard.bundles.assets.AssetsBundleConfiguration;
+import io.dropwizard.bundles.assets.AssetsConfiguration;
 import io.dropwizard.db.DataSourceFactory;
 
-public class MeetMeConfiguration extends Configuration {
+public class MeetMeConfiguration extends Configuration implements AssetsBundleConfiguration {
+
+    @JsonProperty
+    private AssetsConfiguration assets;
     private DataSourceFactory dataSourceFactory;
     private String dbPort;
 
@@ -26,5 +31,10 @@ public class MeetMeConfiguration extends Configuration {
     @JsonProperty
     public void setDbPort(String dbPort) {
         this.dbPort = dbPort;
+    }
+
+    @Override
+    public AssetsConfiguration getAssetsConfiguration() {
+        return assets;
     }
 }
