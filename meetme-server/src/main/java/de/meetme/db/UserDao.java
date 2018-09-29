@@ -45,14 +45,16 @@ public class UserDao extends AbstractDao<User> {
         return q.<User>getResultList();
     }
 
-    public List<User> createPerson(User user) {
-        String sqlQuery = "Insert Into "+ getEntityClass().getSimpleName() +" (firstname, name, email, password) values (?,?,?,?)";
+    public boolean createPerson(User user) {
+        String sqlQuery = "Insert Into "+ getEntityClass().getSimpleName() +" (firstname, lastname, email, password) values (?,?,?,?)";
         Query q = currentSession().createNativeQuery(sqlQuery, User.class);
-        q.setParameter( 1, user.getFirstName() );
+        q.setParameter( 1, user.getFirstname() );
         q.setParameter( 2, user.getLastname() );
         q.setParameter( 3, user.getEmail() );
         q.setParameter( 4, user.getPassword() );
-        return q.<User>getResultList();
+        q.executeUpdate();
+        //TODO bei erfolgreichem erstellen true senden
+        return true;
     }
 
 }

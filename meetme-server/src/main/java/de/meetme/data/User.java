@@ -19,7 +19,7 @@ public class User extends PersistentObject {
     @Column(nullable =false)
     private String lastname;
     @Column(nullable =false)
-    private String firstName;
+    private String firstname;
     @Column(length = 200)
     private String description;
 
@@ -28,18 +28,18 @@ public class User extends PersistentObject {
         super(0);
     }
 
-    public User(String firstName, String name, String email, String description, String password){
+    public User(String firstname, String name, String email, String description, String password){
         super(0);
         this.email = email;
         this.password = password;
         this.lastname = name;
-        this.firstName = firstName;
+        this.firstname = firstname;
         this.description = description;
     }
 
     @JsonProperty // if the object is streamed as JSON id will be included
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
     @JsonProperty // if the object is streamed as JSON id will be included
@@ -67,7 +67,7 @@ public class User extends PersistentObject {
         return "User{" +
                 "id=" + getId() +
                 ", lastname='" + lastname + '\'' +
-                ", firstName='" + firstName + '\'' +
+                ", firstName='" + firstname + '\'' +
                 ", email='" + email + '\'' +
                 ", description='" + description + '\'' +
                 '}';

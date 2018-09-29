@@ -36,16 +36,18 @@ public class UserService {
     }
 
     @GET // HTTP method: get
-    @Path("/login/{email}&&{password}") // the URL path contains the parameter "id" this will be provided to the loginUser() method
+    @Path("/login/{email}&{password}")
     @UnitOfWork //  be transaction aware (This tag automatically creates a database transaction with begin/commit or rollback in case of an error
     public String loginUser(@PathParam("email") String email, @PathParam("password") String password) {
         List<User> users = dao.byEmail(email);
         if(!users.isEmpty()){
             if(users.get(0).getPassword().equals(password)){
-                return "true";
+                log.info("Login success");
+                return "{\"login\" : \"success\"}";
             }
         }
-        return "false";
+        log.info("Login failed");
+        return "{\"login\" : \"failed\"}";
     }
 
     @DELETE  // HTTP method: delete
@@ -74,9 +76,9 @@ public class UserService {
     @POST // HTTP method post (the parameter is provided as stream from the browser)
     @Path("/register") // the URL path contains the parameter "id" this will be provided to the loginUser() method
     @UnitOfWork  //  be transaction aware (This tag automatically creates a database transaction with begin/commit or rollback in case of an error
-    public String registerUser(User user){
+    public void registerUser(User user){
+        log.debug("Created User: " + user);
         dao.createPerson(user);
-        return "User createt";
     }
 
     @PUT // HTTP method put (the parameter is provided as stream from the browser)

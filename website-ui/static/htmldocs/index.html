@@ -7,31 +7,79 @@
 
   <title>Picturama</title>
 
-  <link rel='stylesheet' href='http://codepen.io/assets/libs/fullpage/jquery-ui.css'>
-
-    <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
-
+    <link rel="stylesheet" href="css/style_index.css" media="screen" type="text/css" />
+    <style>
+.button {
+  background-color: #008CBA;
+    border: none;
+    color: white;
+    text: "Login";
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    width: 274px;
+}
+.button:hover {
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+</style>
 </head>
 
 <body>
 
   <div class="login-card">
     <h1>Log-in</h1><br>
-  <form>
-    <input type="text" name="user" placeholder="E-Mail">
-    <input type="password" name="pass" placeholder="Passwort">
-    <input type="submit" name="login" class="login login-submit" value="Login">
+  <form action="javascript:loginUser();">
+    <input type="text" id="email" placeholder="E-Mail">
+    <input type="password" id="password" placeholder="Passwort">
+      <input type="submit" placeholder="Login" class="button" value="Login">
   </form>
 
   <div class="login-help">
-    <a href="register/index.html">Registrieren</a> • <a href="#">Passwort vergessen</a>
+    <a href="/register.html">Registrieren</a> • <a href="#">Passwort vergessen</a>
   </div>
 </div>
 
-<!-- <div id="error"><img src="https://dl.dropboxusercontent.com/u/23299152/Delete-icon.png" /> Your caps-lock is on.</div> -->
 
-  <script src='http://codepen.io/assets/libs/fullpage/jquery_and_jqueryui.js'></script>
+  <script>
+  function loginUser(){
+  	var email = document.getElementById("email").value;
+	var password = document.getElementById("password").value;
+    var xhttp = new XMLHttpRequest();
+    var response;
+
+
+         xhttp.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+            response = JSON.parse(xhttp.responseText);
+            console.log(response.login);
+            handleResponse(response);
+        }
+  };
+
+  xhttp.open("Get", "http://localhost:8080/api/user/login/"+email+"&"+password,true);
+  xhttp.send();
+    return false;
+  }
+  </script>
+
+<script>
+    function handleResponse(response){
+          if(response.login == "success"){
+            <!-- Auf neue Seite -->
+            window.open ('helloWorld.html','_self',false)
+            }
+
+            if(response.login == "failed"){
+            <!-- Alert, Passwort falsch -->
+            alert("Login failed");
+            }
+    }
+</script>
 
 </body>
-
 </html>

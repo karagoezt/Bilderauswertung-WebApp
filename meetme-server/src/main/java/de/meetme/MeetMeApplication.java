@@ -50,6 +50,8 @@ public class MeetMeApplication extends Application<MeetMeConfiguration> {
 
         // register Website
         bootstrap.addBundle(new AssetsBundle("/htmldocs/", "/", "index.html", "static"));
+//        bootstrap.addBundle(new AssetsBundle("/htmldocs/css", "/css", null, "static"));
+//        bootstrap.addBundle(new AssetsBundle("/htmldocs/js", "/js", null, "static"));
 
         // register Dropwizard Hibernate bundle
         bootstrap.addBundle(hibernate);
