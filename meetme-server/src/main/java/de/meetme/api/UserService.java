@@ -7,14 +7,7 @@ import io.dropwizard.hibernate.UnitOfWork;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -64,14 +57,6 @@ public class UserService {
     public List<User> getUser() {
         return  dao.getAll();
     }
-
-//    @POST // HTTP method post (the parameter is provided as stream from the browser)
-//    @Path("/register/{firstname}&&{name}&&{email}&&{password}") // the URL path contains the parameter "id" this will be provided to the loginUser() method
-//    @UnitOfWork  //  be transaction aware (This tag automatically creates a database transaction with begin/commit or rollback in case of an error
-//    public String registerUser(@PathParam("firstname") String firstname, @PathParam("firstname") String name, @PathParam("firstname") String email, @PathParam("firstname") String password){
-//        dao.createPerson(new User(firstname,  name, email,"", password));
-//        return "User createt";
-//    }
 
     @POST // HTTP method post (the parameter is provided as stream from the browser)
     @Path("/register") // the URL path contains the parameter "id" this will be provided to the loginUser() method

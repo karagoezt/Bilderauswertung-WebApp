@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<style>
+table,th,td {
+  border : 1px solid black;
+  border-collapse: collapse;
+}
+th,td {
+  padding: 5px;
+}
+</style>
+<body>
+
+<table id="demo"></table>
+
+<script>
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function(){
+		if(this.readyState == 4 && this.status == 200){
+			var response = JSON.parse(xhttp.responseText);
+			console.log(response);
+
+            dataToTable(response);
+			}
+		};
+	xhttp.open("Get", "http://localhost:8080/api/user",true);
+	xhttp.send();
+</script>
+
+<script>
+  function dataToTable(json) {
+  var i;
+  var table="<tr><th>Vorname</th><th>Nachname</th><th>Email</th><th>Rolle</th></tr>";
+
+  for (i = 0; i <json.length; i++) {
+    table += "<tr><td>" +
+    json[i].firstname +
+    "</td><td>" +
+    json[i].lastname +
+    "</td><td>"+
+    json[i].email +
+    "</td><td>"+
+    json[i].role +
+    "</td></tr>";
+  }
+  document.getElementById("demo").innerHTML = table;
+  }
+</script>
+
+</body>
+</html>
