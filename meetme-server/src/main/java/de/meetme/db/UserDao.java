@@ -45,7 +45,7 @@ public class UserDao extends AbstractDao<User> {
         return q.<User>getResultList();
     }
 
-    public boolean createPerson(User user) {
+    public boolean createUser(User user) {
         String sqlQuery = "Insert Into "+ getEntityClass().getSimpleName() +" (firstname, lastname, email, password) values (?,?,?,?)";
         Query q = currentSession().createNativeQuery(sqlQuery, User.class);
         q.setParameter( 1, user.getFirstname() );

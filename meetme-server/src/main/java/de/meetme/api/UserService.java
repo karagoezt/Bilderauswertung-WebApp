@@ -63,7 +63,8 @@ public class UserService {
     @UnitOfWork  //  be transaction aware (This tag automatically creates a database transaction with begin/commit or rollback in case of an error
     public void registerUser(User user){
         log.debug("Created User: " + user);
-        dao.createPerson(user);
+//        dao.persist(user); //Setzt die User role nicht von selbst auf user
+        dao.createUser(user);
     }
 
     @PUT // HTTP method put (the parameter is provided as stream from the browser)
